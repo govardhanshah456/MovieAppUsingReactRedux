@@ -30,7 +30,7 @@ const MovieListing = () => {
         </div>
     );
     console.log(movies);
-    console.log(shows)
+    console.log(shows);
     return (
         <div className='movie-wrapper'>
 

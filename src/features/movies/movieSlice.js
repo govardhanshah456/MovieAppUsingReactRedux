@@ -35,6 +35,7 @@ const initialState = {
     movies: {},
     shows: {},
     selectedMovieOrShow: {},
+    loading: false,
 }
 const movieSlice = createSlice({
     name: "movies",
@@ -45,19 +46,23 @@ const movieSlice = createSlice({
         }
     },
     extraReducers: {
-        [fetchAsyncMovies.pending]: () => {
-            console.log("Pending");
+        [fetchAsyncMovies.pending]: (state) => {
+            return { ...state, loading: true }
         },
         [fetchAsyncMovies.fulfilled]: (state, { payload }) => {
+            // state.loading = false;
             console.log("Fetched Movies");
-            return { ...state, movies: payload };
+            return { ...state, movies: payload, loading: false };
+
         },
-        [fetchAsyncMovies.rejected]: () => {
+        [fetchAsyncMovies.rejected]: (state) => {
+            // state.loading = false;
             console.log("Rejected");
+            return { ...state, loading: false }
         },
         [fetchAsyncShows.fulfilled]: (state, { payload }) => {
             console.log("Fetched shows");
-            return { ...state, shows: payload };
+            return { ...state, shows: payload, loading: false };
         },
         [fetchAsyncMovieOrShowDetail.fulfilled]: (state, { payload }) => {
             console.log("Fetched selectedMovieOrShow");
@@ -69,5 +74,6 @@ const movieSlice = createSlice({
 export const { removeSelectedMovieOrShow } = movieSlice.actions;
 export const getAllMovies = (state) => state.movies.movies
 export const getAllShows = (state) => state.movies.shows
+export const getLoading = (state) => state.movies.loading
 export const getSelectedMovieOrShow = (state) => state.movies.selectedMovieOrShow
 export default movieSlice.reducer
